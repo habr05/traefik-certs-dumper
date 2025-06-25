@@ -15,6 +15,7 @@ privatekey_file=${privatekey_file_name}${privatekey_file_ext}
 rsakey_file_name=${RSA_KEY_FILE_NAME:-rsakey}
 rsakey_file_ext=${RSA_KEY_FILE_EXT:-.pem}
 rsakey_file=${rsakey_file_name}${rsakey_file_ext}
+pkcs12_file_name=${PKCS12_FILE_NAME:-cert}
 
 
 ###############################################
@@ -178,13 +179,13 @@ combine_pkcs12() {
       local i=$(basename "${subdir}" /)
       if [[ -f ${outputdir}/${i}/${certificate_file} && -f ${outputdir}/${i}/${privatekey_file} ]]; then
         log "Combining key and cert for domain ${i} to pkcs12 file"
-        openssl pkcs12 -export -in ${outputdir}/"${i}"/"${certificate_file}" -inkey ${outputdir}/"${i}"/"${privatekey_file}" -out ${outputdir}/"${i}"/cert.p12 -password pass:"${PKCS12_PASSWORD}"
+        openssl pkcs12 -export -in ${outputdir}/"${i}"/"${certificate_file}" -inkey ${outputdir}/"${i}"/"${privatekey_file}" -out ${outputdir}/"${i}"/${pkcs12_file_name}.p12 -name "${DOMAIN}" -password pass:"${PKCS12_PASSWORD}"
       fi
     done
   else
     if [[ -f ${outputdir}/${certificate_file} && -f ${outputdir}/${privatekey_file} ]]; then
       log "Combining key and cert to PKCS12 file"
-      openssl pkcs12 -export -in ${outputdir}/"${certificate_file}" -inkey ${outputdir}/"${privatekey_file}" -out ${outputdir}/cert.p12 -password pass:"${PKCS12_PASSWORD}"
+      openssl pkcs12 -export -in ${outputdir}/"${certificate_file}" -inkey ${outputdir}/"${privatekey_file}" -out ${outputdir}/${pkcs12_file_name}.p12 -name "${DOMAIN}" -password pass:"${PKCS12_PASSWORD}"
     fi
   fi
 }
