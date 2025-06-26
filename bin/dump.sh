@@ -179,7 +179,7 @@ combine_pkcs12() {
       local i=$(basename "${subdir}" /)
       if [[ -f ${outputdir}/${i}/${certificate_file} && -f ${outputdir}/${i}/${privatekey_file} ]]; then
         log "Combining key and cert for domain ${i} to pkcs12 file"
-        openssl pkcs12 -export -in ${outputdir}/"${i}"/"${certificate_file}" -inkey ${outputdir}/"${i}"/"${privatekey_file}" -out ${outputdir}/"${i}"/${pkcs12_file_name}.p12 -name "${DOMAIN}" -password pass:"${PKCS12_PASSWORD}"
+        openssl pkcs12 -export -in ${outputdir}/"${i}"/"${certificate_file}" -inkey ${outputdir}/"${i}"/"${privatekey_file}" -out ${outputdir}/"${i}"/${pkcs12_file_name}.p12 -name "${i}" -password pass:"${PKCS12_PASSWORD}"
       fi
     done
   else
